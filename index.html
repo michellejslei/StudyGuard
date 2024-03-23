@@ -3,10 +3,14 @@
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
 <br><br><br><br>
-<audio id="testAudio">
-  <source src="testAudio.mp3" type="audio/mpeg">
+<audio id="helloAudio">
+  <source src="helloAudio.mp3" type="audio/mpeg">
   Your browser does not support HTML5 audio.
 </audio>
+<audio id="goodbyeAudio">
+    <source src="goodbyeAudio.mp3" type="audio/mpeg">
+    Your browser does not support HTML5 audio.
+  </audio>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
@@ -18,13 +22,20 @@
     let model, webcam, ctx, labelContainer, maxPredictions;
 
         // functions to play and pause audio file
-        var aud = document.getElementById("testAudio");
+        var helloAud = document.getElementById("helloAudio");
+        var goodbyeAud = document.getElementById("goodbyeAudio");
 
-        function playAud() { 
-            aud.play(); 
+        function playHelloAud() { 
+            helloAud.play(); 
         }
-        function pauseAud() { 
-            aud.pause(); 
+        function pauseHelloAud() { 
+            helloAud.pause(); 
+        }
+        function playGoodbyeAud() { 
+            goodbyeAud.play(); 
+        }
+        function pauseGoodbyeAud() { 
+            goodbyeAud.pause(); 
         }
 
     async function init() {
@@ -74,10 +85,16 @@
             labelContainer.childNodes[i].innerHTML = classPrediction;
 			
 			// don't play audio when head's neutral with probability >= 75%
-			if (prediction[0].probability.toFixed(2) >= 0.75)
-				pauseAud();
-			else
-				playAud();
+			if (prediction[0].probability.toFixed(2) >= 0.75) {
+				pauseHelloAud();
+                pauseGoodbyeAud();
+            } else if (prediction[1].probability.toFixed(2) >= 0.75) {
+                pauseGoodbyeAud();
+                playHelloAud();
+            } else {
+                pauseHelloAud();
+                playGoodbyeAud();
+            }
         }
 
         // finally draw the poses
