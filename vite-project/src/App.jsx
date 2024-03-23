@@ -18,7 +18,7 @@ const App = () => {
                 alt="Home"
               /> */}
               <span class="hidden md:block text-white text-2xl font-bold ml-2"
-                >Study Guard</span>
+                >StudyGuard</span>
             </a>
             <div class="md:ml-auto">
               <div class="flex flex-shrink-0">
