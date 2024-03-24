@@ -26,7 +26,7 @@ const App = () => {
         <div class="text-center">
           <h1 class="my-4 text-6xl text-white">StudyGuard</h1>
           <h1 class="text-3xl font-extrabold text-white">
-            The Study Buddy You Hate to Love
+            The study buddy you hate to love
           </h1>
           {isHovered ? (
             <img
@@ -48,7 +48,7 @@ const App = () => {
             onMouseEnter={() => setIsHovered(true)} // Set isHovered to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set isHovered to false on mouse leave
           >
-            Get Started Now
+            Get started now
           </a>
           {/* Conditionally render image based on hover state */}
 
