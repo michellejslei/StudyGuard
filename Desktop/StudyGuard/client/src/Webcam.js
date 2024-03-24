@@ -117,14 +117,16 @@ const Webcam = ({ socket, room }) => {
                 console.log("phone");
                 setPlayHelloAudio(true);
                 setPlayGoodbyeAudio(false);
-                socket.emit('userDistracted', room, "Your friend is distracted by their phone.");
-                await new Promise(resolve => setTimeout(resolve, 5000));
+                // socket.emit('userDistracted', room, "Your friend is distracted by their phone.");
+                // await setTimeout(5000);
+                // await new Promise(resolve => setTimeout(resolve, 5000));
             } else {
                 console.log("gone");
                 setPlayHelloAudio(false);
                 setPlayGoodbyeAudio(true);
-                socket.emit('userDistracted', room, "Your friend is gone.");
-                await new Promise(resolve => setTimeout(resolve, 5000));
+                // socket.emit('userDistracted', room, "Your friend is gone.");
+                // await new Promise(resolve => setTimeout(resolve, 5000));
+                // await setTimeout(5000);
             }
         }
 

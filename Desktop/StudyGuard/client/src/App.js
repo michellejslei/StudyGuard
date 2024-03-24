@@ -269,7 +269,9 @@ const App = () => {
   return (
     <div>
       <h1>Group Study Zone</h1>
-      <Webcam socket={socket} room={"221"} />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <Webcam socket={socket} room={room} />
+      </div>
       <Timer />
       <input type="text" value={myName} onChange={(e) => setMyName(e.target.value)} placeholder="Enter your name" />
       <input type="text" value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Enter room name" />
