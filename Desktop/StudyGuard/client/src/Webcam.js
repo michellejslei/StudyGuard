@@ -3,7 +3,9 @@ import React, { useState, useRef, useEffect } from 'react';
 // import * as tf from '@tensorflow/tfjs';
 import * as tmPose from '@teachablemachine/pose';
 
-const Webcam = () => {
+// const Webcam = () => {
+const Webcam = ({ socket, room }) => {
+
     const URL = "https://teachablemachine.withgoogle.com/models/MMDGiD6CS/";
     let model, webcam, ctx, labelContainer, maxPredictions;
 
@@ -87,9 +89,9 @@ const Webcam = () => {
         const prediction = await model.predict(posenetOutput);
 
         for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
+            // const classPrediction =
+            //     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            // labelContainer.childNodes[i].innerHTML = classPrediction;
 			
 			// // don't play audio when head's neutral with probability >= 75%
 			// if (prediction[0].probability.toFixed(2) >= 0.75) {
@@ -113,10 +115,12 @@ const Webcam = () => {
                 console.log("phone");
                 setPlayHelloAudio(true);
                 setPlayGoodbyeAudio(false);
+                socket.emit('userDistracted', room, "Your friend is distracted by their phone.");
             } else {
                 console.log("gone");
                 setPlayHelloAudio(false);
                 setPlayGoodbyeAudio(true);
+                socket.emit('userDistracted', room, "Your friend is gone.");
             }
         }
 
@@ -124,15 +128,16 @@ const Webcam = () => {
         drawPose(pose);
     }
 
+
     function drawPose(pose) {
         if (webcam.canvas) {
             ctx.drawImage(webcam.canvas, 0, 0);
             // draw the keypoints and skeleton
-            if (pose) {
-                const minPartConfidence = 0.5;
-                tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-                tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-            }
+            // if (pose) {
+            //     const minPartConfidence = 0.5;
+            //     tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            //     tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            // }
         }
     }
 
