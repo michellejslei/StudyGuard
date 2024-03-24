@@ -24,8 +24,8 @@ const App = () => {
 
       <section class="bg-rose-300 py-20 mb-4">
         <div class="text-center">
-          <h1 class="my-4 text-5xl text-white">StudyGuard</h1>
-          <h1 class="text-2xl font-extrabold text-white">
+          <h1 class="my-4 text-6xl text-white">StudyGuard</h1>
+          <h1 class="text-3xl font-extrabold text-white">
             The Study Buddy You Hate to Love
           </h1>
           {isHovered ? (

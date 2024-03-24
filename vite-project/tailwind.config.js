@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Trebuchet MS', 'sans-serif']
+        sans: ['Ribes']
       },
       gridTemplateColumns: {
         '70/30': '70% 28%',
