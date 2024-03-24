@@ -37,8 +37,6 @@ io.on('connection', (socket) => {
 
   socket.on('userDistracted', (room, message) => {
     io.to(room).emit('distractedListener', message);
-    console.log('room is', room); 
-
   });
 
   socket.on('disconnect', () => {
