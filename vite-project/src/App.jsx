@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// git branch --set-upstream-to=origin/main frontend
+// git push -u origin frontend:main
 
 const App = () => {
   // State to track hover state
@@ -10,7 +12,7 @@ const App = () => {
         <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div class="flex h-20 items-center justify-left">
             <a class="flex space-x-2itemnpms-center" href="/index.html">
-              {/* Your logo */}
+              {/* Your logo hERE */ }
             </a>
             <a
               href="/index.html"
