@@ -48,18 +48,17 @@ const Timer = () => {
 
   return (
     <div className="countdown-timer">
-      <h1>Countdown Timer</h1>
-      <div className="timer">
-        {minutes < 10 ? `0${minutes}` : minutes}:
-        {seconds < 10 ? `0${seconds}` : seconds}
-      </div>
-      <div className="buttons">
+      <div className="timer-container"> {/* New container */}
+        <div className="timer">
+          {minutes < 10 ? `0${minutes}` : minutes}:
+          {seconds < 10 ? `0${seconds}` : seconds}
+        </div>
         <div className="button-container">
           <button className="vertical-button" onClick={handleIncreaseTime}>+</button>
           <button className="vertical-button" onClick={handleDecreaseTime}>-</button>
         </div>
-        <button onClick={handleStartPause}>{isActive ? '❚❚' : '▶'}</button>
       </div>
+      <button onClick={handleStartPause}>{isActive ? '❚❚' : '▶'}</button>
     </div>
   );
 };

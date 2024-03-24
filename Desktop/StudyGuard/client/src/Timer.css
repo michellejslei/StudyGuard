@@ -33,15 +33,28 @@
   }
   
   .vertical-button {
-    margin: 5px;
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color: darkslategray;
-    color: white;
+    margin: 2px; /* Reduced margin */
+    padding: 4px 8px; /* Reduced padding */
+    font-size: 12px; /* Reduced font size */
+    background-color: rgb(222, 222, 222);
+    color: rgb(0, 0, 0);
     border: none;
     border-radius: 2px;
     cursor: pointer;
   }
 
+  .countdown-timer > button {
+    display: block; /* Keeps the button not inline */
+    margin: 1px auto; /* Adds space above it and centers it */
+    padding: 6px 10px; /* Increased padding */
+    font-size: 1.5rem; /* Increased font size */
+    cursor: pointer;
+  }
+
+  .timer-container {
+    display: flex;
+    align-items: center; /* Center the items vertically */
+    justify-content: center; /* Center the items horizontally */
+  }
 
   
