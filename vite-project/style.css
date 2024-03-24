@@ -129,6 +129,22 @@ button:hover {
     z-index: 20; /* Ensure they are above the webcam in the stacking order */
   }
 
+  #vertical-buttons {
+    position: fixed;
+    top: 570px; /* Adjust based on the actual height of the webcam */
+    left: calc(50% + 100px); /* Adjust the left position based on the width of the timer */
+    z-index: 20; /* Ensure they are above other elements in the stacking order */
+  }
+  
+  #vertical-buttons button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px; /* Add some space between the buttons */
+  }
+  
+
   .join-room-container {
     position: fixed;
     top: 110px;
