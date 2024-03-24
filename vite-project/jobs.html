@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Guard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="join-room-container">
+        <h2>join a study room</h2>
+        <input type="text" id="name" placeholder="your name">
+        <input type="text" id="roomName" placeholder="room name">
+        <button type="button" id="joinRoom">Join Room</button>
+    </div>
+<div class="content">
+    
+<div id="title">study! i'm watching you</div>
+<button type="button" id="startButton" onclick="init()">start focus</button>
+<div><canvas id="canvas"></canvas></div>
+<div id="timer">30:00</div>
+<div id="timer-buttons">
+<button id="startTimer">▶</button>
+<button id="pauseTimer">❚❚</button>
+</div>
+<div id="label-container"></div>
+</div>
+<div id="logo-container">
+    <img src="/public/favicon.png" alt="Study Guard Logo">
+</div>
+<br><br><br><br>
+<audio id="helloAudio">
+  <source src="helloAudio.mp3" type="audio/mpeg">
+  Your browser does not support HTML5 audio.
+</audio>
+<audio id="goodbyeAudio">
+    <source src="goodbyeAudio.mp3" type="audio/mpeg">
+    Your browser does not support HTML5 audio.
+  </audio>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/pose
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/MMDGiD6CS/";
+    let model, webcam, ctx, labelContainer, maxPredictions;
+
+        // functions to play and pause audio file
+        var helloAud = document.getElementById("helloAudio");
+        var goodbyeAud = document.getElementById("goodbyeAudio");
+
+        function playHelloAud() { 
+            helloAud.play(); 
+        }
+        function pauseHelloAud() { 
+            helloAud.pause(); 
+        }
+        function playGoodbyeAud() { 
+            goodbyeAud.play(); 
+        }
+        function pauseGoodbyeAud() { 
+            goodbyeAud.pause(); 
+        }
+
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // Note: the pose library adds a tmPose object to your window (window.tmPose)
+        model = await tmPose.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const size = 350;
+        const flip = true; // whether to flip the webcam
+        webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append/get elements to the DOM
+        const canvas = document.getElementById("canvas");
+        canvas.width = size; canvas.height = size;
+        ctx = canvas.getContext("2d");
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+
+    }
+
+    async function loop(timestamp) {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        // Prediction #1: run input through posenet
+        // estimatePose can take in an image, video or canvas html element
+        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+        // Prediction 2: run input through teachable machine classification model
+        const prediction = await model.predict(posenetOutput);
+
+        for (let i = 0; i < maxPredictions; i++) {
+            // const classPrediction =
+            //     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            // labelContainer.childNodes[i].innerHTML = classPrediction;
+			
+			// don't play audio when head's neutral with probability >= 75%
+			if (prediction[0].probability.toFixed(2) >= 0.75) {
+				pauseHelloAud();
+                pauseGoodbyeAud();
+            } else if (prediction[1].probability.toFixed(2) >= 0.75) {
+                pauseGoodbyeAud();
+                playHelloAud();
+            } else {
+                pauseHelloAud();
+                playGoodbyeAud();
+            }
+        }
+
+        // finally draw the poses
+        drawPose(pose);
+    }
+
+    function drawPose(pose) {
+        if (webcam.canvas) {
+            ctx.drawImage(webcam.canvas, 0, 0);
+            // draw the keypoints and skeleton
+            // if (pose) {
+            //     const minPartConfidence = 0.5;
+            //     tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            //     tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            // }
+        }
+    }
+
+    let countdown;
+    const timerDisplay = document.getElementById('timer');
+    const startButton = document.getElementById('startTimer');
+    const pauseButton = document.getElementById('pauseTimer');
+    let timeLeft = 30 * 60; // 30 minutes in seconds
+
+    function timer(seconds) {
+    // clear any existing timers
+    clearInterval(countdown);
+
+    const now = Date.now();
+    const then = now + seconds * 1000;
+    displayTimeLeft(seconds); // to immediately display the starting time
+
+    countdown = setInterval(() => {
+        const secondsLeft = Math.round((then - Date.now()) / 1000);
+        // check if we should stop it!
+        if (secondsLeft < 0) {
+        clearInterval(countdown);
+        return;
+        }
+        // display it
+        displayTimeLeft(secondsLeft);
+    }, 1000);
+    }
+
+    function displayTimeLeft(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainderSeconds = seconds % 60;
+    const display = `${minutes}:${remainderSeconds < 10 ? '0' : ''}${remainderSeconds}`;
+    timerDisplay.textContent = display;
+    }
+
+    startButton.addEventListener('click', () => timer(timeLeft));
+
+    pauseButton.addEventListener('click', () => {
+    clearInterval(countdown);
+    });
+</script>
+</body>
+
+</html>
