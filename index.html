@@ -1,4 +1,4 @@
-<div>Teachable Machine Pose Model</div>
+<div>Study Guard</div>
 <button type="button" onclick="init()">Start</button>
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
@@ -49,7 +49,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 200;
+        const size = 350;
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
@@ -80,9 +80,9 @@
         const prediction = await model.predict(posenetOutput);
 
         for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
+            // const classPrediction =
+            //     prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            // labelContainer.childNodes[i].innerHTML = classPrediction;
 			
 			// don't play audio when head's neutral with probability >= 75%
 			if (prediction[0].probability.toFixed(2) >= 0.75) {
@@ -105,11 +105,11 @@
         if (webcam.canvas) {
             ctx.drawImage(webcam.canvas, 0, 0);
             // draw the keypoints and skeleton
-            if (pose) {
-                const minPartConfidence = 0.5;
-                tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
-                tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
-            }
+            // if (pose) {
+            //     const minPartConfidence = 0.5;
+            //     tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+            //     tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+            // }
         }
     }
 </script>
