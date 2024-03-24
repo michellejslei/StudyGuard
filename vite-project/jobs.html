@@ -107,7 +107,9 @@
         for (let i = 0; i < maxPredictions; i++) { // and class labels
             labelContainer.appendChild(document.createElement("div"));
         }
-        toggleTimer();
+        if (!isActive) {
+          toggleTimer();
+        }
 
     }
 
@@ -197,13 +199,20 @@
     }
 
     function increaseTime() {
-      totalSeconds += 5 * 60 + 1; // don't know why the plus one - but otherwise its 1 sec off??
+      if (totalSeconds == 0) {
+        totalSeconds += 5 * 60
+      } else {
+        totalSeconds += 5 * 60 + 1; // don't know why the plus one - but otherwise its 1 sec off??
+      }
       updateTime();
     }
 
     function decreaseTime() {
       if (totalSeconds >= 5 * 60 - 1) { // Ensure the timer doesn't go negative
         totalSeconds -= 5 * 60 - 1; // Subtract 5 minutes in seconds
+        updateTime();
+      } else {
+        totalSeconds = 0;
         updateTime();
       }
     }
