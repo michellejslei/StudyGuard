@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Study Guard</title>
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 </head>
 
 <body>
+  
     <div class="join-room-container">
         <h2>join a study room</h2>
         <input type="text" id="name" placeholder="your name">
         <input type="text" id="roomName" placeholder="room name">
         <button type="button" id="joinRoom">Join Room</button>
+        <button type="button" id="notify">Notify Friends</button>
+        <div id="messageDisplay"></div>
     </div>
+    
 <div class="content">
     
 <div id="title">study! i'm watching you</div>
@@ -62,6 +68,38 @@
 
     // the link to your model provided by Teachable Machine export panel
     const URL = "https://teachablemachine.withgoogle.com/models/MMDGiD6CS/";
+    const socket = io('http://localhost:3001');
+    const nameInput = document.getElementById('name');
+    const roomInput = document.getElementById('roomName');
+    const messageDisplay = document.getElementById('messageDisplay'); // Reference the new message display area
+
+    // Add this if you have a place to display messages, otherwise you can remove references to messagesList
+    // const messagesList = document.getElementById('messages');
+
+    document.getElementById('joinRoom').addEventListener('click', () => {
+        const room = roomInput.value;
+        socket.emit('joinRoom', room);
+    });
+
+    document.getElementById('notify').addEventListener('click', () => {
+        const room = roomInput.value;
+        const myName = nameInput.value;
+        socket.emit('userDistracted', room, `${myName} is distracted`);
+    });
+
+    // Listen for messages to display
+    socket.on('distractedListener', (msg) => {
+        const messageElement = document.createElement('div');
+        messageElement.textContent = msg;
+        messageDisplay.appendChild(messageElement); // Append messages to the display area
+    });
+
+    function displayMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      messageDisplay.appendChild(messageElement);
+  }
+
     let model, webcam, ctx, labelContainer, maxPredictions;
 
         // functions to play and pause audio file
@@ -142,9 +180,11 @@
             } else if (prediction[1].probability.toFixed(2) >= 0.75 && isActive) {
                 pauseGoodbyeAud();
                 playHelloAud();
+                displayMessage('Friend is distracted');
             } else if (isActive) {
                 pauseHelloAud();
                 playGoodbyeAud();
+                displayMessage('Friend is gone');
             }
         }
 
