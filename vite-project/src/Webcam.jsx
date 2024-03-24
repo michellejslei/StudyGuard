@@ -1,3 +1,4 @@
+// import React from 'react';
 import React, { useState, useRef, useEffect } from 'react';
 // import * as tf from '@tensorflow/tfjs';
 import * as tmPose from '@teachablemachine/pose';
@@ -114,12 +115,12 @@ const Webcam = ({ socket, room }) => {
                 console.log("phone");
                 setPlayHelloAudio(true);
                 setPlayGoodbyeAudio(false);
-                socket.emit('userDistracted', room, Your friend is distracted by their phone.);
+                socket.emit('userDistracted', room, "Your friend is distracted by their phone.");
             } else {
                 console.log("gone");
                 setPlayHelloAudio(false);
                 setPlayGoodbyeAudio(true);
-                socket.emit('userDistracted', room, Your friend is gone.);
+                socket.emit('userDistracted', room, "Your friend is gone.");
             }
         }
 
