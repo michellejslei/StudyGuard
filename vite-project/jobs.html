@@ -21,10 +21,9 @@
 <div><canvas id="canvas"></canvas></div>
 <div id="timer">30:00</div>
 <div id="timer-buttons">
-<button onclick="startTimer()">Start</button>
-<!-- <button id="startTimer">▶</button> -->
-<!-- <button id="pauseTimer">❚❚</button> -->
-<button onclick="pauseTimer()">Pause</button>
+<!-- <button onclick="startTimer()">Start</button> -->
+<!-- <button onclick="pauseTimer()">Pause</button> -->
+<button id="playPauseButton" onclick="toggleTimer()">▶</button>
 </div>
 <div id="label-container"></div>
 </div>
@@ -112,6 +111,12 @@
         window.requestAnimationFrame(loop);
     }
 
+    let timerInterval;
+    let timerElement = document.getElementById('timer');
+    let minutesInput = document.getElementById('minutesInput');
+    let totalSeconds = 25 * 60; // Set initial timer duration to 25 minutes
+    let isActive = false;
+
     async function predict() {
         // Prediction #1: run input through posenet
         // estimatePose can take in an image, video or canvas html element
@@ -128,10 +133,10 @@
 			if (prediction[0].probability.toFixed(2) >= 0.75) {
 				pauseHelloAud();
                 pauseGoodbyeAud();
-            } else if (prediction[1].probability.toFixed(2) >= 0.75) {
+            } else if (prediction[1].probability.toFixed(2) >= 0.75 && isActive) {
                 pauseGoodbyeAud();
                 playHelloAud();
-            } else {
+            } else if (isActive) {
                 pauseHelloAud();
                 playGoodbyeAud();
             }
@@ -153,20 +158,25 @@
         }
     }
 
-    let countdown;
-    const timerDisplay = document.getElementById('timer');
-    const startButton = document.getElementById('startTimer');
-    const pauseButton = document.getElementById('pauseTimer');
-    let timeLeft = 30 * 60; // 30 minutes in seconds
+    // let countdown;
+    // const timerDisplay = document.getElementById('timer');
+    // const startButton = document.getElementById('startTimer');
+    // const pauseButton = document.getElementById('pauseTimer');
+    // let timeLeft = 30 * 60; // 30 minutes in seconds
 
 
-    let timerInterval;
-    let timerElement = document.getElementById('timer');
-    let minutesInput = document.getElementById('minutesInput');
-    let totalSeconds = 25 * 60; // Set initial timer duration to 25 minutes
-    let isActive = false;
 
     updateTime(); // Display initial timer value
+
+    function toggleTimer() {
+      if (!isActive) {
+        startTimer();
+        playPauseButton.textContent = '❚❚';
+      } else {
+        pauseTimer();
+        playPauseButton.textContent = '▶';
+      }
+    }
 
     function startTimer() {
       if (!isActive) {
