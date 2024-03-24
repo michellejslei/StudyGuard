@@ -1,4 +1,5 @@
-import React from 'react';
+// import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 // import * as tf from '@tensorflow/tfjs';
 import * as tmPose from '@teachablemachine/pose';
 
@@ -7,21 +8,42 @@ const Webcam = () => {
     let model, webcam, ctx, labelContainer, maxPredictions;
 
         // functions to play and pause audio file
-        var helloAud = document.getElementById("helloAudio");
-        var goodbyeAud = document.getElementById("goodbyeAudio");
+        // var helloAud = document.getElementById("helloAudio");
+        // var goodbyeAud = document.getElementById("goodbyeAudio");
 
-        function playHelloAud() { 
-            helloAud.play(); 
-        }
-        function pauseHelloAud() { 
-            helloAud.pause(); 
-        }
-        function playGoodbyeAud() { 
-            goodbyeAud.play(); 
-        }
-        function pauseGoodbyeAud() { 
-            goodbyeAud.pause(); 
-        }
+        // function playHelloAud() { 
+        //     helloAud.play(); 
+        // }
+        // function pauseHelloAud() { 
+        //     helloAud.pause(); 
+        // }
+        // function playGoodbyeAud() { 
+        //     goodbyeAud.play(); 
+        // }
+        // function pauseGoodbyeAud() { 
+        //     goodbyeAud.pause(); 
+        // }
+        const helloAudioRef = useRef(null);
+        const goodbyeAudioRef = useRef(null);
+
+        const [playHelloAudio, setPlayHelloAudio] = useState(false);
+        const [playGoodbyeAudio, setPlayGoodbyeAudio] = useState(false);
+
+        useEffect(() => {
+            if (playHelloAudio) {
+                helloAudioRef.current.play();
+            } else {
+                helloAudioRef.current.pause();
+            }
+        }, [playHelloAudio]);
+    
+        useEffect(() => {
+            if (playGoodbyeAudio) {
+                goodbyeAudioRef.current.play();
+            } else {
+                goodbyeAudioRef.current.pause();
+            }
+        }, [playGoodbyeAudio]);
 
     async function init() {
         const modelURL = URL + "model.json";
@@ -69,19 +91,32 @@ const Webcam = () => {
                 prediction[i].className + ": " + prediction[i].probability.toFixed(2);
             labelContainer.childNodes[i].innerHTML = classPrediction;
 			
-			// don't play audio when head's neutral with probability >= 75%
-			if (prediction[0].probability.toFixed(2) >= 0.75) {
-                console.log("studying")
-				// pauseHelloAud();
-                // pauseGoodbyeAud();
+			// // don't play audio when head's neutral with probability >= 75%
+			// if (prediction[0].probability.toFixed(2) >= 0.75) {
+            //     console.log("studying")
+			// 	// pauseHelloAud();
+            //     // pauseGoodbyeAud();
+            // } else if (prediction[1].probability.toFixed(2) >= 0.75) {
+            //     console.log("phone")
+            //     // pauseGoodbyeAud();
+            //     // playHelloAud();
+            // } else {
+            //     console.log("gone")
+            //     // pauseHelloAud();
+            //     // playGoodbyeAud();
+            // }
+            if (prediction[0].probability.toFixed(2) >= 0.75) {
+                console.log("studying");
+                setPlayHelloAudio(false);
+                setPlayGoodbyeAudio(false);
             } else if (prediction[1].probability.toFixed(2) >= 0.75) {
-                console.log("phone")
-                // pauseGoodbyeAud();
-                // playHelloAud();
+                console.log("phone");
+                setPlayHelloAudio(true);
+                setPlayGoodbyeAudio(false);
             } else {
-                console.log("gone")
-                // pauseHelloAud();
-                // playGoodbyeAud();
+                console.log("gone");
+                setPlayHelloAudio(false);
+                setPlayGoodbyeAudio(true);
             }
         }
 
@@ -109,11 +144,11 @@ const Webcam = () => {
         <div><canvas id="canvas"></canvas></div>
         <div id="label-container"></div>
         <br/><br/><br/><br/>
-        <audio id="helloAudio">
+        <audio ref={helloAudioRef}>
           <source src="./helloAudio.mp3" type="audio/mpeg" />
           Your browser does not support HTML5 audio.
         </audio>
-        <audio id="goodbyeAudio">
+        <audio ref={goodbyeAudioRef}>
             <source src="./goodbyeAudio.mp3" type="audio/mpeg" />
             Your browser does not support HTML5 audio.
         </audio>
@@ -124,4 +159,3 @@ const Webcam = () => {
 }
 
 export default Webcam
-
