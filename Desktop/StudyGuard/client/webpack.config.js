@@ -6,6 +6,11 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
+  debug: true,
+  devtool: "#eval-source-map",
+  optimization: {
+    minimize: false
+  },
   module: {
     rules: [
       {
