@@ -172,3 +172,16 @@ button:hover {
   .join-room-container button:hover {
     background-color: #fa8061; /* Darker shade of green on hover */
   }
+
+  #vertical-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  #vertical-buttons button {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }

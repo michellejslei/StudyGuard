@@ -19,11 +19,15 @@
 <div id="title">study! i'm watching you</div>
 <button type="button" id="startButton" onclick="init()">start focus</button>
 <div><canvas id="canvas"></canvas></div>
-<div id="timer">30:00</div>
+<div id="timer">25:00</div>
 <div id="timer-buttons">
 <!-- <button onclick="startTimer()">Start</button> -->
 <!-- <button onclick="pauseTimer()">Pause</button> -->
 <button id="playPauseButton" onclick="toggleTimer()">▶</button>
+<!-- <div id="vertical-buttons"> -->
+<button onclick="increaseTime()">+</button>
+<button onclick="decreaseTime()">-</button>
+<!-- </div> -->
 </div>
 <div id="label-container"></div>
 </div>
@@ -102,6 +106,7 @@
         for (let i = 0; i < maxPredictions; i++) { // and class labels
             labelContainer.appendChild(document.createElement("div"));
         }
+        toggleTimer();
 
     }
 
@@ -188,6 +193,18 @@
     function pauseTimer() {
       isActive = false;
       clearInterval(timerInterval);
+    }
+
+    function increaseTime() {
+      totalSeconds += 5 * 60 + 1; // don't know why the plus one - but otherwise its 1 sec off??
+      updateTime();
+    }
+
+    function decreaseTime() {
+      if (totalSeconds >= 5 * 60 - 1) { // Ensure the timer doesn't go negative
+        totalSeconds -= 5 * 60 - 1; // Subtract 5 minutes in seconds
+        updateTime();
+      }
     }
 
     function updateTimer() {
