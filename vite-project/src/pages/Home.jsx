@@ -1,29 +1,13 @@
 import React, { useState } from 'react';
+import Background from '../components/Background';
 
-const App = () => {
-  // State to track hover state
+const Home = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <body>
-      <nav class="bg-gradient-to-r from-purple-300 to-pink-300">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div class="flex h-20 items-center justify-left">
-            <a class="flex space-x-2items-center" href="/index.html">
-              {/* Your logo */}
-            </a>
-            <a
-              href="/index.html"
-              class="text-white text-xl hover:bg-rose-400 hover:text-white rounded-md px-3 py-2"
-            >
-              Login
-            </a>
-          </div>
-        </div>
-      </nav>
-
-      <section className="bg-wave-pattern h-screen bg-cover bg-center text-white">
-        <div class="text-center">
+    <div className="bg-wave-pattern h-screen bg-cover bg-center flex flex-col z-0 w-full relative">
+      {/* <Background /> */}
+      <div class="text-center z-10 relative py-36">
           <h1 class="my-4 text-6xl text-white">StudyGuard</h1>
           <h1 class="text-3xl font-extrabold text-white">
             The study buddy you hate to love
@@ -53,9 +37,8 @@ const App = () => {
           {/* Conditionally render image based on hover state */}
 
         </div>
-      </section>
-    </body>
-  );
-};
+    </div>
+  )
+}
 
-export default App;
+export default Home

@@ -15,6 +15,9 @@ export default {
       colors: {
         'bubblegum': '#ff77e9',
       },
+      backgroundImage: {
+        'wave-pattern': "url('/public/wave-background.PNG')",
+      }
     },
   },
   plugins: [],

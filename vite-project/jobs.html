@@ -22,7 +22,7 @@
     
 <div class="content">
     
-<div id="title">study! i'm watching you</div>
+<div id="title">stay focused and study!!</div>
 <button type="button" id="startButton" onclick="init()">start focus</button>
 <div><canvas id="canvas"></canvas></div>
 <div id="timer">25:00</div>
@@ -145,9 +145,7 @@
         for (let i = 0; i < maxPredictions; i++) { // and class labels
             labelContainer.appendChild(document.createElement("div"));
         }
-        if (!isActive) {
-          toggleTimer();
-        }
+        toggleTimer();
 
     }
 
@@ -182,11 +180,11 @@
             } else if (prediction[1].probability.toFixed(2) >= 0.75 && isActive) {
                 pauseGoodbyeAud();
                 playHelloAud();
-                displayMessage('Friend is distracted');
+                // displayMessage('Friend is distracted');
             } else if (isActive) {
                 pauseHelloAud();
                 playGoodbyeAud();
-                displayMessage('Friend is gone');
+                // displayMessage('Friend is gone');
             }
         }
 
@@ -239,20 +237,13 @@
     }
 
     function increaseTime() {
-      if (totalSeconds == 0) {
-        totalSeconds += 5 * 60
-      } else {
-        totalSeconds += 5 * 60 + 1; // don't know why the plus one - but otherwise its 1 sec off??
-      }
+      totalSeconds += 5 * 60 + 1; // don't know why the plus one - but otherwise its 1 sec off??
       updateTime();
     }
 
     function decreaseTime() {
       if (totalSeconds >= 5 * 60 - 1) { // Ensure the timer doesn't go negative
         totalSeconds -= 5 * 60 - 1; // Subtract 5 minutes in seconds
-        updateTime();
-      } else {
-        totalSeconds = 0;
         updateTime();
       }
     }

@@ -201,3 +201,11 @@ button:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
   }
+
+  #messageDisplay {
+    margin-top: 20px; /* Adjusts the space between the container and the messages */
+    font-size: 14px; /* Makes the font size smaller */
+    color: #ffffff; /* Adjust the color if needed */
+    max-height: 200px; /* Optional: Sets a max height for the message display area */
+    overflow-y: auto; /* Optional: Adds a scrollbar if the content exceeds the max height */
+}
