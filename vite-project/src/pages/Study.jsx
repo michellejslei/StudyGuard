@@ -60,7 +60,7 @@ const Study = () => {
       <div className="text-center w-full">
           <h1 className="text-white text-5xl py-8">stay focused and study!!</h1>
           <button 
-            className="bg-white px-4 py-2 text-xl text-purple-100 rounded-lg transition duration-300 ease-in-out hover:bg-hover-button-start mx-auto"
+            className="bg-white px-4 py-2 text-xl text-purple-100 rounded-lg transition duration-300 ease-in-out hover:bg-rose-400 hover:text-white mx-auto"
             onClick={init}>
               start focus
           </button>

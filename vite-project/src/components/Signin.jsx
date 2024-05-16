@@ -43,7 +43,7 @@ const Heading = () => (
       <h1 className="text-slate-700 text-2xl font-semibold">Sign in to your account</h1>
       <p className="text-white">
         Don't have an account?{" "}
-        <a href="#" className="text-blue-400">
+        <a href="#" className="text-purple-100">
           Create one.
         </a>
       </p>
@@ -96,7 +96,7 @@ const Email = () => {
           <label htmlFor="password-input" className="block text-white">
             Password
           </label>
-          <a href="#" className="text-sm text-blue-400">
+          <a href="#" className="text-sm text-purple-100">
             Forgot?
           </a>
         </div>
@@ -117,11 +117,11 @@ const Email = () => {
 const Terms = () => (
   <p className="mt-9 text-xs text-white">
     By signing in, you agree to our{" "}
-    <a href="#" className="text-blue-400">
+    <a href="#" className="text-purple-100">
       Terms & Conditions
     </a>{" "}
     and{" "}
-    <a href="#" className="text-blue-400">
+    <a href="#" className="text-purple-100">
       Privacy Policy.
     </a>
   </p>
@@ -147,7 +147,7 @@ const BubbleButton = ({ children, className, ...rest }) => {
       className={twMerge(
         `
         relative z-0 flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-md 
-        border bg-gradient-to-br from-purple-300 to-pink-300
+        border bg-gradient-to-br from-purple-300 to-purple-400
         px-3 py-1.5
         text-zinc-50 transition-all duration-300
         
@@ -158,7 +158,7 @@ const BubbleButton = ({ children, className, ...rest }) => {
         before:transition-transform before:duration-500
         before:content-[""]
 
-        hover:scale-105 hover:text-zinc-600
+        hover:scale-105 hover:text-purple-100
         hover:before:translate-y-[0%]
         active:scale-100`,
         className
