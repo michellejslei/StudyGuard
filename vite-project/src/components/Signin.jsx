@@ -6,11 +6,7 @@ import { twMerge } from "tailwind-merge";
 
 export const DarkGridAuth = () => {
   return (
-    <div className="bg-transparent py-20 text-zinc-200 selection:bg-zinc-600">
-      {/* <BubbleButton className="absolute left-4 top-6 text-sm">
-        <FiArrowLeft />
-        Go back
-      </BubbleButton> */}
+    <div className="bg-transparent py-12 text-zinc-200 selection:bg-zinc-600">
 
       <motion.div
         initial={{
@@ -44,7 +40,7 @@ const Heading = () => (
   <div>
     {/* <NavLogo /> */}
     <div className="mb-9 mt-6 space-y-1.5">
-      <h1 className="text-white text-2xl font-semibold">Sign in to your account</h1>
+      <h1 className="text-slate-700 text-2xl font-semibold">Sign in to your account</h1>
       <p className="text-white">
         Don't have an account?{" "}
         <a href="#" className="text-blue-400">
@@ -135,7 +131,7 @@ const SplashButton = ({ children, className, ...rest }) => {
   return (
     <button
       className={twMerge(
-        "rounded-md bg-gradient-to-br from-bubblegum to-blue-700 px-4 py-2 text-lg text-zinc-50 ring-blue-500/50 ring-offset-2 transition-all hover:scale-[1.02] hover:ring-transparent active:scale-[0.98] active:ring-blue-500/70",
+        "rounded-md bg-gradient-to-br from-purple-300 to-blue-700 px-4 py-2 text-lg text-zinc-50 ring-blue-500/50 ring-offset-2 transition-all hover:scale-[1.02] hover:ring-transparent active:scale-[0.98] active:ring-blue-500/70",
         className
       )}
       {...rest}
@@ -151,7 +147,7 @@ const BubbleButton = ({ children, className, ...rest }) => {
       className={twMerge(
         `
         relative z-0 flex items-center gap-2 overflow-hidden whitespace-nowrap rounded-md 
-        border bg-gradient-to-br from-bubblegum to-blue-700
+        border bg-gradient-to-br from-purple-300 to-pink-300
         px-3 py-1.5
         text-zinc-50 transition-all duration-300
         
@@ -162,7 +158,7 @@ const BubbleButton = ({ children, className, ...rest }) => {
         before:transition-transform before:duration-500
         before:content-[""]
 
-        hover:scale-105 hover:text-zinc-900
+        hover:scale-105 hover:text-zinc-600
         hover:before:translate-y-[0%]
         active:scale-100`,
         className

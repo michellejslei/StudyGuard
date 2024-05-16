@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Background from '../components/Background';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -37,6 +38,7 @@ const Home = () => {
           {/* Conditionally render image based on hover state */}
 
         </div>
+        <Footer />
     </div>
   )
 }

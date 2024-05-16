@@ -14,6 +14,8 @@ export default {
       },
       colors: {
         'bubblegum': '#ff77e9',
+        'purple-100': 'rgb(139, 67, 163)',
+        'hover-button-start': '#ffe0c3',
       },
       backgroundImage: {
         'wave-pattern': "url('/public/wave-background.PNG')",

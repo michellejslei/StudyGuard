@@ -1,4 +1,5 @@
 import React from 'react'
+import Footer from '../components/Footer'
 
 const About = () => {
   return (
@@ -9,6 +10,7 @@ const About = () => {
         StudyGuard is an ML study buddy that will keep you focused the way your mom would have kept you accountable in high school!
         </h1>
       </div>
+      <Footer />
     </div>
   )
 }

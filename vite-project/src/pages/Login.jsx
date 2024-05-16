@@ -1,5 +1,6 @@
 import React from 'react'
 import { DarkGridAuth } from '../components/Signin'
+import Footer from '../components/Footer'
 
 const Login = () => {
   return (
@@ -7,6 +8,7 @@ const Login = () => {
       <div className="z-10 w-full">
         <DarkGridAuth />
       </div>
+      <Footer />
     </div>
   )
 }
