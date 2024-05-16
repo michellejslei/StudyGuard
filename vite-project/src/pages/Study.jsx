@@ -7,7 +7,7 @@ import io from 'socket.io-client';
 import Footer from '../components/Footer';
 import Timer from '../components/Timer';
 
-const socket = io('https://cdn.socket.io/4.0.0/socket.io.min.js');
+const socket = io('http://localhost:3001');
 
 const JoinRoom = () => {
   const [name, setName] = useState('');

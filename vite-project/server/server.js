@@ -10,17 +10,17 @@ const io = socketIo(server, {
   cors: {
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST'],
-    allowedHeaders: ['my-custom-header'],
-    credentials: true
+    // allowedHeaders: ['my-custom-header'],
+    // credentials: true
   }
 });
 
 const PORT = process.env.PORT || 3001;
 
 // Allow CORS for all origins
-app.use(cors({
-  origin: '*'
-}));
+// app.use(cors({
+//   origin: '*'
+// }));
 
 // WebSocket connections
 io.on('connection', (socket) => {

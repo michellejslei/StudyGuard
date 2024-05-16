@@ -11,14 +11,14 @@
 
 <body>
   
-    <div class="join-room-container">
-        <h2>join a study room</h2>
-        <input type="text" id="name" placeholder="your name">
-        <input type="text" id="roomName" placeholder="room name">
-        <button type="button" id="joinRoom">Join Room</button>
-        <button type="button" id="notify">Notify Friends</button>
-        <div id="messageDisplay"></div>
-    </div>
+<div class="join-room-container">
+    <h2>join a study room</h2>
+    <input type="text" id="name" placeholder="your name">
+    <input type="text" id="roomName" placeholder="room name">
+    <button type="button" id="joinRoom">Join Room</button>
+    <button type="button" id="notify">Notify Friends</button>
+    <div id="messageDisplay"></div>
+</div>
     
 <div class="content">
     
@@ -27,8 +27,6 @@
 <div><canvas id="canvas"></canvas></div>
 <div id="timer">25:00</div>
 <div id="timer-buttons">
-<!-- <button onclick="startTimer()">Start</button> -->
-<!-- <button onclick="pauseTimer()">Pause</button> -->
 <button id="playPauseButton" onclick="toggleTimer()">▶</button>
 
 </div>
@@ -68,12 +66,11 @@
 
     // the link to your model provided by Teachable Machine export panel
     const URL = "https://teachablemachine.withgoogle.com/models/MMDGiD6CS/";
-    const   socket = io('http://localhost:3001');
+    const socket = io('http://localhost:3001');
     const nameInput = document.getElementById('name');
     const roomInput = document.getElementById('roomName');
     const messageDisplay = document.getElementById('messageDisplay'); // Reference the new message display area
 
-    // Add this if you have a place to display messages, otherwise you can remove references to messagesList
     // const messagesList = document.getElementById('messages');
 
     document.getElementById('joinRoom').addEventListener('click', () => {
@@ -161,6 +158,8 @@
     let totalSeconds = 25 * 60; // Set initial timer duration to 25 minutes
     let isActive = false;
 
+    let hasNotified = false;
+
     async function predict() {
         // Prediction #1: run input through posenet
         // estimatePose can take in an image, video or canvas html element
@@ -175,20 +174,26 @@
 			
 			// don't play audio when head's neutral with probability >= 75%
 			if (prediction[0].probability.toFixed(2) >= 0.75) {
-				pauseHelloAud();
-                pauseGoodbyeAud();
-            } else if (prediction[1].probability.toFixed(2) >= 0.75 && isActive) {
-                pauseGoodbyeAud();
-                playHelloAud();
-                // displayMessage('Friend is distracted');
-            } else if (isActive) {
-                pauseHelloAud();
-                playGoodbyeAud();
-                // displayMessage('Friend is gone');
-            }
+          // reset notification state if user is focused
+          hasNotified = false;
+          pauseHelloAud();
+          pauseGoodbyeAud();
+        } else if (prediction[1].probability.toFixed(2) >= 0.75 && isActive && !hasNotified) {
+          hasNotified = false;
+          pauseGoodbyeAud();
+          playHelloAud();
+          displayMessage('Friend is distracted');
+          hasNotified = true;
+        } else if (isActive && !hasNotified) {
+          hasNotified = false;
+          pauseHelloAud();
+          playGoodbyeAud();
+          displayMessage('Friend is gone');
+          hasNotified = true;
         }
+      }
 
-        // finally draw the poses
+        // draw the poses
         drawPose(pose);
     }
 
@@ -203,14 +208,6 @@
             // }
         }
     }
-
-    // let countdown;
-    // const timerDisplay = document.getElementById('timer');
-    // const startButton = document.getElementById('startTimer');
-    // const pauseButton = document.getElementById('pauseTimer');
-    // let timeLeft = 30 * 60; // 30 minutes in seconds
-
-
 
     updateTime(); // Display initial timer value
 
