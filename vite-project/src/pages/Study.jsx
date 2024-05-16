@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import io from 'socket.io-client';
 import Footer from '../components/Footer';
+import Timer from '../components/Timer';
 
 const socket = io('https://cdn.socket.io/4.0.0/socket.io.min.js');
 
@@ -36,12 +37,20 @@ const JoinRoom = () => {
 };
 
 const Study = () => {
+  const [isActive, setIsActive] = useState(false);
   const canvasRef = useRef(null);
+
+  const toggleTimer = () => {
+    setIsActive(!isActive);  // Toggle the timer active state
+  };
 
     const init = () => {
         // initialization logic 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
+
+        // Start the timer
+        setIsActive(true);
         
         // Clear previous drawings and start fresh
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -65,6 +74,10 @@ const Study = () => {
               start focus
           </button>
           <canvas ref={canvasRef}></canvas>
+          <Timer isActive={isActive} onTimeComplete={() => console.log("Timer complete!")}/>
+          <button className="bg-white hover:bg-rose-400 hover:text-white text-purple-100 font-bold py-1 px-3 rounded my-4" onClick={toggleTimer}>
+              {isActive ? '❚❚' : '▶'}
+          </button>
         </div>
         <Footer />
     </div>

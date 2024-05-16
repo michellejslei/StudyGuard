@@ -29,7 +29,7 @@ const Home = () => {
           <p class="my-4 text-4xl text-white"></p>
           <a
             href="/jobs.html"
-            class="my-4 text-2xl text-white hover:bg-rose-400 hover:text-white rounded-md px-3 py-2"
+            class="my-4 text-2xl bg-white text-purple-100 hover:bg-rose-400 hover:text-white rounded-md px-4 py-3"
             onMouseEnter={() => setIsHovered(true)} // Set isHovered to true on mouse enter
             onMouseLeave={() => setIsHovered(false)} // Set isHovered to false on mouse leave
           >
