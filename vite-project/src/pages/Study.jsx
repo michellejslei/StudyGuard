@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import * as tf from '@tensorflow/tfjs';
+import Webcam from 'react-webcam';
+
 import io from 'socket.io-client';
+
 import Footer from '../components/Footer';
 import Timer from '../components/Timer';
 
@@ -50,31 +54,82 @@ const JoinRoom = () => {
 
 const Study = () => {
   const [isActive, setIsActive] = useState(false);
+  const [webcamActive, setWebcamActive] = useState(false);
   const canvasRef = useRef(null);
+  const webcamRef = useRef(null);
+  const [model, setModel] = useState(null);
 
   const toggleTimer = () => {
     setIsActive(!isActive);
   };
 
-const init = () => {
-  // initialization logic 
-  const canvas = canvasRef.current;
-  const ctx = canvas.getContext('2d');
+  const init = () => {
+    // initialization logic 
+    setIsActive(true);
+    setWebcamActive(true);
 
-  // Start the timer
-  setIsActive(true);
-  
-  // Clear previous drawings and start fresh
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = 'blue';
-  ctx.fillRect(10, 10, 100, 100);  
-};
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    // Start the timer
+    setIsActive(true);
+    
+    // Clear previous drawings and start fresh
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(10, 10, 100, 100);  
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.width = 300;
     canvas.height = 200;
   }, []);
+
+  useEffect(() => {
+    const modelURL = 'https://teachablemachine.withgoogle.com/models/MMDGiD6CS/model.json';
+    const metadataURL = 'https://teachablemachine.withgoogle.com/models/MMDGiD6CS/metadata.json';
+
+    const loadModel = async () => {
+      const loadedModel = await tf.loadLayersModel(modelURL);
+      setModel(loadedModel);
+      console.log("Model loaded.");
+    };
+
+    loadModel();
+  }, []);
+
+  const detect = async () => {
+    if (webcamRef.current && webcamRef.current.video.readyState === 4 && model) {
+      const video = webcamRef.current.video;
+      const videoWidth = webcamRef.current.video.videoWidth;
+      const videoHeight = webcamRef.current.video.videoHeight;
+
+      webcamRef.current.video.width = videoWidth;
+      webcamRef.current.video.height = videoHeight;
+      canvasRef.current.width = videoWidth;
+      canvasRef.current.height = videoHeight;
+
+      // Make a prediction through the model on our video frame.
+      const img = tf.browser.fromPixels(video);
+      const resized = tf.image.resizeBilinear(img, [640, 480]);
+      const casted = resized.cast('int32');
+      const expanded = casted.expandDims(0);
+      const obj = await model.predict(expanded);
+      console.log(obj);
+      
+      // Draw mesh
+      const ctx = canvasRef.current.getContext("2d");
+      ctx.drawImage(video, 0, 0, videoWidth, videoHeight);
+    }
+  };
+
+  useEffect(() => {
+    if (webcamActive) {
+      const interval = setInterval(detect, 100);
+      return () => clearInterval(interval);
+    }
+  }, [webcamActive, model]);
 
   return (
     <div className="bg-wave-pattern h-screen bg-cover bg-center flex flex-col z-0 w-full relative">
@@ -86,7 +141,26 @@ const init = () => {
             onClick={init}>
               start focus
           </button>
-          <canvas ref={canvasRef}></canvas>
+          <div className="flex flex-col items-center justify-center">
+          <Webcam 
+            ref={webcamRef} 
+            className="z-10"
+            style={{ 
+              width: '400px', 
+              height: '400px',
+              transform: 'scaleX(-1)'
+            }} 
+          />
+          <canvas 
+            ref={canvasRef} 
+            style={{
+              width: '320px',
+              height: '240px',
+              position: 'absolute', 
+              transform: 'scaleX(-1)' 
+            }}
+          />
+        </div>
           <Timer isActive={isActive} onTimeComplete={() => console.log("Timer complete!")}/>
           <button className="bg-white my-4 px-4 py-2 text-xl text-purple-100 rounded-lg transition duration-300 ease-in-out hover:bg-rose-400 hover:text-white mx-auto" onClick={toggleTimer}>
             {isActive ? '❚❚' : '▶'}
